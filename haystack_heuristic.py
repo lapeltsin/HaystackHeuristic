@@ -41,7 +41,6 @@ def run_haystack():
             total_doms.extend(discovered_doms)
             print '%d new Disease-Only-Motifs of %d total DOMs discovered'%(len(discovered_doms),
                                                                             len(total_doms))
-
     return total_doms
 
 def local_search(starting_motif, patients_data, filtered_triplets, gap_count=1,
@@ -52,7 +51,7 @@ def local_search(starting_motif, patients_data, filtered_triplets, gap_count=1,
         if score['hc_count'] == 0:
             print 'Discovered DOM'
             print "Matches %d MS patients"%(score['ms_count'])
-            return ([starting_motif, score['ms_count']])
+            return [(starting_motif, score['ms_count'])]
 
     queue = [starting_motif]
     while queue:
@@ -265,5 +264,8 @@ def load_patient_sequences(patient_id, fname, delimiter=';', cdr_index=-1):
 
 
 if __name__ == '__main__':
-    run_haystack()
+    total_doms = sorted(run_haystack(), key=lambda x:x[1])
+    for dom, count in total_doms:
+        print "DOM %s occurs in %d patients"%(str(dom), count)
+
 
